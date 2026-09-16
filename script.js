@@ -795,3 +795,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 });
+
+<script src="config.js"></script>
