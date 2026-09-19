@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#07111b">
+<title>HADES666 — Staff Manager</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="bg-grid"></div><div class="glow g1"></div><div class="glow g2"></div><div id="particles"></div>
+
+<header class="nav">
+  <a class="brand" href="#inicio"><img id="brandLogo" src="" alt=""><span><b id="brandName">HADES666</b><small id="brandRole">STAFF MANAGER</small></span></a>
+  <nav>
+    <a href="#inicio">Inicio</a><a href="#presentacion">Presentación</a><a href="#sobre">Sobre mí</a><a href="#trabajo">Qué hago</a><a href="#stats">Estadísticas</a><a href="#experiencia">Experiencia</a><a href="#contacto">Contacto</a>
+  </nav>
+  
+</header>
+
+<main>
+<section id="inicio" class="hero section">
+  <div class="hero-text reveal">
+    <div class="eyebrow"><i></i><span id="heroEyebrow"></span></div>
+    <h1 id="heroTitle"></h1>
+    <p id="heroText"></p>
+    <div class="buttons"><a class="btn primary" id="heroPrimary" href="#contacto"></a><a class="btn secondary" id="heroSecondary" href="#experiencia"></a></div>
+    <div class="availability"><span></span><b id="availability"></b><em id="location"></em></div>
+  </div>
+  <div class="profile-wrap reveal delay">
+    <div class="orbit"></div>
+    <div class="profile">
+      <div class="profile-head"><small>PROFILE // 001</small><strong>ONLINE</strong></div>
+      <img id="profileLogo" class="avatar" src="" alt="">
+      <h2 id="profileName"></h2><p id="profileRole"></p>
+      <div id="tags" class="tags"></div>
+      <div class="profile-foot"><span>EXPERIENCIA</span><b id="experience"></b></div>
+    </div>
+  </div>
+</section>
+
+<section id="presentacion" class="section">
+ <div class="heading reveal"><span>01</span><div><small>PRESENTACIÓN</small><h2 id="presentationTitle"></h2></div></div>
+ <div class="presentation-grid"><p class="big-copy reveal" id="presentationText"></p><div class="quote reveal delay"><b>“</b><p id="quote"></p><small id="quoteBy"></small></div></div>
+</section>
+
+<section id="sobre" class="section">
+ <div class="heading reveal"><span>02</span><div><small>SOBRE MÍ</small><h2 id="aboutTitle"></h2></div></div>
+ <div class="about-grid"><p class="big-copy reveal" id="aboutText"></p><div id="aboutPoints" class="points reveal delay"></div></div>
+</section>
+
+<section id="trabajo" class="section">
+ <div class="heading reveal"><span>03</span><div><small>QUÉ HAGO</small><h2 id="servicesTitle"></h2></div></div>
+ <div id="services" class="cards"></div>
+</section>
+
+<section id="stats" class="section">
+ <div class="heading reveal"><span>04</span><div><small>ESTADÍSTICAS</small><h2>Experiencia en números.</h2></div></div>
+ <div id="statsGrid" class="stats"></div>
+</section>
+
+<section id="experiencia" class="section">
+ <div class="heading reveal"><span>05</span><div><small>EXPERIENCIA</small><h2 id="projectsTitle"></h2></div></div>
+ <div id="projects" class="projects"></div>
+</section>
+
+<section id="proceso" class="section">
+ <div class="heading reveal"><span>06</span><div><small>PROCESO</small><h2>Una estructura clara.</h2></div></div>
+ <div id="process" class="process"></div>
+</section>
+
+<section id="referencias" class="section">
+ <div class="heading reveal"><span>07</span><div><small>REFERENCIAS</small><h2>Experiencias de trabajo.</h2></div></div>
+ <div id="testimonials" class="testimonials"></div>
+</section>
+
+<section id="contacto" class="section">
+ <div class="contact reveal"><div><small>CONTACTO</small><h2 id="contactTitle"></h2><p id="contactText"></p></div><div class="contact-buttons"><a id="discord" class="btn primary" target="_blank">DISCORD ↗</a><a id="email" class="btn secondary">EMAIL</a></div></div>
+</section>
+</main>
+<footer><b id="footerName">HADES666</b><span>© <span id="year"></span> • STAFF MANAGEMENT</span></footer>
+<script src="config.js"></script><script src="script.js"></script>
+</body>
+</html>
