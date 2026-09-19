@@ -1,486 +1,834 @@
-/* =========================================================
-   PORTFOLIO SCRIPT
-========================================================= */
+(function () {
+
+  "use strict";
 
 
-let config = clone(DEFAULT_CONFIG);
+  /* =========================================
+     CARGAR CONFIGURACION
+  ========================================= */
 
+  var saved = localStorage.getItem("portfolioConfig");
 
-/* =========================================================
-   UTILIDADES
-========================================================= */
+  if (saved) {
 
-function clone(object) {
-  return JSON.parse(JSON.stringify(object));
-}
-
-
-function escapeHTML(value) {
-
-  if (value === null || value === undefined) {
-    return "";
-  }
-
-  return String(value)
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&#039;");
-}
-
-
-function loadConfig() {
-
-  try {
-
-    const saved = localStorage.getItem("portfolioConfig");
-
-    if (!saved) {
-      return clone(DEFAULT_CONFIG);
+    try {
+      CONFIG = JSON.parse(saved);
+    } catch (error) {
+      console.log("Configuracion guardada invalida.");
     }
 
-    const parsed = JSON.parse(saved);
-
-    return {
-      ...clone(DEFAULT_CONFIG),
-      ...parsed,
-      profile: {
-        ...clone(DEFAULT_CONFIG.profile),
-        ...(parsed.profile || {})
-      },
-      about: {
-        ...clone(DEFAULT_CONFIG.about),
-        ...(parsed.about || {})
-      },
-      studio: {
-        ...clone(DEFAULT_CONFIG.studio),
-        ...(parsed.studio || {})
-      },
-      services: Array.isArray(parsed.services)
-        ? parsed.services
-        : clone(DEFAULT_CONFIG.services),
-      projects: Array.isArray(parsed.projects)
-        ? parsed.projects
-        : clone(DEFAULT_CONFIG.projects),
-      reviews: Array.isArray(parsed.reviews)
-        ? parsed.reviews
-        : clone(DEFAULT_CONFIG.reviews),
-      socials: Array.isArray(parsed.socials)
-        ? parsed.socials
-        : clone(DEFAULT_CONFIG.socials)
-    };
-
-  } catch (error) {
-
-    console.error("No se pudo cargar la configuracion:", error);
-
-    return clone(DEFAULT_CONFIG);
   }
-}
 
 
-config = loadConfig();
+  /* =========================================
+     FUNCION SIMPLE PARA TEXTO SEGURO
+  ========================================= */
+
+  function safe(text) {
+
+    if (text === undefined || text === null) {
+      return "";
+    }
+
+    return String(text)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 
 
-/* =========================================================
-   ELEMENTOS
-========================================================= */
+  /* =========================================
+     PERFIL
+  ========================================= */
 
-const loader = document.getElementById("portfolioLoader");
-const loaderNumber = document.getElementById("loaderNumber");
-const loaderProgress = document.getElementById("loaderProgress");
-const loaderStatus = document.getElementById("loaderStatus");
+  function renderProfile() {
 
-const menuButton = document.getElementById("menuButton");
-const navMenu = document.getElementById("navMenu");
+    document.getElementById("name").textContent =
+      CONFIG.profile.name;
 
+    document.getElementById("title").textContent =
+      CONFIG.profile.title;
 
-/* =========================================================
-   RENDER PRINCIPAL
-========================================================= */
+    document.getElementById("description").textContent =
+      CONFIG.profile.description;
 
-function renderProfile() {
+    document.getElementById("status").textContent =
+      CONFIG.profile.status;
 
-  document.getElementById("heroName").textContent =
-    config.profile.name;
-
-  document.getElementById("heroTitle").textContent =
-    config.profile.title;
-
-  document.getElementById("heroDescription").textContent =
-    config.profile.description;
-
-  document.getElementById("heroStatus").textContent =
-    config.profile.status;
-
-  document.getElementById("heroImage").src =
-    config.profile.image;
-
-  document.getElementById("aboutTitle").textContent =
-    config.about.title;
-
-  document.getElementById("aboutText").textContent =
-    config.about.text;
-
-  document.getElementById("studioName").textContent =
-    config.studio.name;
-
-  document.getElementById("studioDescription").textContent =
-    config.studio.description;
-}
+    document.getElementById("profileImage").src =
+      CONFIG.profile.image;
 
 
-/* =========================================================
-   SERVICIOS
-========================================================= */
+    document.getElementById("aboutTitle").textContent =
+      CONFIG.about.title;
 
-function renderServices() {
-
-  const container =
-    document.getElementById("servicesGrid");
-
-  container.innerHTML = "";
-
-  config.services.forEach((service, index) => {
-
-    const card = document.createElement("article");
-
-    card.className = "service-card reveal";
-
-    card.innerHTML = `
-
-      <div class="service-number">
-        ${String(index + 1).padStart(2, "0")}
-      </div>
-
-      <h3>
-        ${escapeHTML(service.title)}
-      </h3>
-
-      <p>
-        ${escapeHTML(service.description)}
-      </p>
-
-    `;
-
-    container.appendChild(card);
-  });
-}
+    document.getElementById("aboutText").textContent =
+      CONFIG.about.text;
 
 
-/* =========================================================
-   PROYECTOS
-========================================================= */
+    document.getElementById("studioName").textContent =
+      CONFIG.studio.name;
 
-function renderProjects() {
-
-  const container =
-    document.getElementById("projectsGrid");
-
-  container.innerHTML = "";
-
-  config.projects.forEach((project, index) => {
-
-    const card = document.createElement("article");
-
-    card.className = "project-card reveal";
-
-    card.innerHTML = `
-
-      <div class="project-top">
-
-        <div class="project-number">
-          ${String(index + 1).padStart(2, "0")}
-        </div>
-
-        <div class="project-status">
-          ${escapeHTML(project.status || "Proximamente")}
-        </div>
-
-      </div>
-
-      <h3>
-        ${escapeHTML(project.name)}
-      </h3>
-
-      <div class="project-category">
-        ${escapeHTML(project.category)}
-      </div>
-
-      <p class="project-description">
-        ${escapeHTML(project.description)}
-      </p>
-
-      <button
-        class="project-button"
-        data-project="${index}"
-      >
-        Ver proyecto
-      </button>
-
-    `;
-
-    container.appendChild(card);
-  });
+    document.getElementById("studioDescription").textContent =
+      CONFIG.studio.description;
+  }
 
 
-  document
-    .querySelectorAll(".project-button")
-    .forEach(button => {
+  /* =========================================
+     SERVICIOS
+  ========================================= */
 
-      button.addEventListener("click", () => {
+  function renderServices() {
 
-        const index =
-          Number(button.dataset.project);
+    var box =
+      document.getElementById("services");
+
+    box.innerHTML = "";
+
+
+    CONFIG.services.forEach(function (service, index) {
+
+      box.innerHTML +=
+
+        '<div class="service-card reveal">' +
+
+          '<span>0' + (index + 1) + '</span>' +
+
+          '<h3>' +
+            safe(service.title) +
+          '</h3>' +
+
+          '<p>' +
+            safe(service.text) +
+          '</p>' +
+
+        '</div>';
+
+    });
+
+  }
+
+
+  /* =========================================
+     PROYECTOS
+  ========================================= */
+
+  function renderProjects() {
+
+    var box =
+      document.getElementById("projects");
+
+    box.innerHTML = "";
+
+
+    CONFIG.projects.forEach(function (project, index) {
+
+      box.innerHTML +=
+
+        '<div class="project-card reveal">' +
+
+          '<div class="project-number">' +
+            String(index + 1).padStart(2, "0") +
+          '</div>' +
+
+          '<div class="project-status">' +
+            safe(project.status) +
+          '</div>' +
+
+          '<h3>' +
+            safe(project.name) +
+          '</h3>' +
+
+          '<small>' +
+            safe(project.category) +
+          '</small>' +
+
+          '<p>' +
+            safe(project.description) +
+          '</p>' +
+
+          '<button class="project-button" data-project="' +
+            index +
+          '">' +
+            'Ver proyecto' +
+          '</button>' +
+
+        '</div>';
+
+    });
+
+
+    var buttons =
+      document.querySelectorAll(".project-button");
+
+
+    buttons.forEach(function (button) {
+
+      button.addEventListener("click", function () {
+
+        var index =
+          Number(button.getAttribute("data-project"));
 
         openProject(index);
 
       });
 
     });
-}
 
-
-/* =========================================================
-   ABRIR PROYECTO
-========================================================= */
-
-function openProject(index) {
-
-  const project = config.projects[index];
-
-  if (!project) {
-    return;
   }
 
 
-  const url =
-    String(project.clientUrl || "").trim();
+  /* =========================================
+     ABRIR PROYECTO
+  ========================================= */
+
+  function openProject(index) {
+
+    var project =
+      CONFIG.projects[index];
 
 
-  if (!url || url === "#") {
-
-    showComingSoon(project.name);
-
-    return;
-  }
-
-
-  startPortfolioLoader(
-    url,
-    "Abriendo portafolio"
-  );
-}
-
-
-/* =========================================================
-   PROYECTO PROXIMAMENTE
-========================================================= */
-
-function showComingSoon(name) {
-
-  const old = document.getElementById("comingSoon");
-
-  if (old) {
-    old.remove();
-  }
-
-
-  const modal =
-    document.createElement("div");
-
-  modal.id = "comingSoon";
-
-  modal.style.cssText = `
-    position:fixed;
-    inset:0;
-    z-index:100000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:rgba(0,0,0,.88);
-    backdrop-filter:blur(12px);
-    padding:20px;
-  `;
-
-
-  modal.innerHTML = `
-
-    <div style="
-      width:min(420px,100%);
-      background:#0d0d0d;
-      border:1px solid rgba(255,0,0,.25);
-      border-radius:16px;
-      padding:35px;
-      text-align:center;
-      box-shadow:0 0 60px rgba(255,0,0,.12);
-      animation:adminOpen .4s ease;
-    ">
-
-      <div style="
-        color:#ff1e1e;
-        font-size:11px;
-        font-weight:800;
-        letter-spacing:3px;
-        margin-bottom:15px;
-      ">
-        PROYECTO
-      </div>
-
-      <h2 style="
-        font-family:Space Grotesk,sans-serif;
-        margin-bottom:12px;
-      ">
-        ${escapeHTML(name)}
-      </h2>
-
-      <p style="
-        color:#777;
-        line-height:1.7;
-        margin-bottom:25px;
-      ">
-        Este portafolio estara disponible proximamente.
-      </p>
-
-      <button
-        id="closeComingSoon"
-        style="
-          padding:12px 20px;
-          background:#ff1e1e;
-          color:white;
-          border-radius:7px;
-          font-weight:800;
-        "
-      >
-        Cerrar
-      </button>
-
-    </div>
-
-  `;
-
-
-  document.body.appendChild(modal);
-
-
-  document
-    .getElementById("closeComingSoon")
-    .addEventListener("click", () => {
-      modal.remove();
-    });
-}
-
-
-/* =========================================================
-   LOADER DE 7 SEGUNDOS
-========================================================= */
-
-let loaderAnimation = null;
-
-
-function startPortfolioLoader(
-  destination = null,
-  status = "Preparando portafolio"
-) {
-
-  if (loaderAnimation) {
-    cancelAnimationFrame(loaderAnimation);
-  }
-
-
-  loader.classList.remove("hide");
-
-  loaderNumber.textContent = "1";
-  loaderProgress.style.width = "0%";
-  loaderStatus.textContent = status;
-
-
-  const duration =
-    Number(config.settings.loadingDuration) || 7000;
-
-
-  const start =
-    performance.now();
-
-
-  function animate(currentTime) {
-
-    const elapsed =
-      currentTime - start;
-
-
-    const progress =
-      Math.min(elapsed / duration, 1);
-
-
-    let number =
-      Math.floor(progress * 100);
-
-
-    if (number < 1) {
-      number = 1;
-    }
-
-    if (number > 100) {
-      number = 100;
+    if (!project) {
+      return;
     }
 
 
-    loaderNumber.textContent =
-      number;
+    if (!project.url || project.url === "#") {
 
-    loaderProgress.style.width =
-      `${number}%`;
-
-
-    if (number >= 100) {
-
-      loaderStatus.textContent =
-        "Portafolio listo";
-
-    }
-
-
-    if (progress < 1) {
-
-      loaderAnimation =
-        requestAnimationFrame(animate);
+      alert(
+        "Este proyecto esta proximamente disponible."
+      );
 
       return;
     }
 
 
-    setTimeout(() => {
-
-      if (destination) {
-
-        window.location.href =
-          destination;
-
-      } else {
-
-        loader.classList.add("hide");
-
-      }
-
-    }, 80);
+    startLoader(
+      project.url,
+      "Abriendo portafolio..."
+    );
 
   }
 
 
-  loaderAnimation =
-    requestAnimationFrame(animate);
-}
+  /* =========================================
+     RESEÑAS
+  ========================================= */
+
+  function renderReviews() {
+
+    var box =
+      document.getElementById("reviews");
+
+    box.innerHTML = "";
 
 
-/* =========================================================
-   INICIO
-========================================================= */
+    CONFIG.reviews.forEach(function (review) {
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+      box.innerHTML +=
+
+        '<div class="review-card reveal">' +
+
+          '<div class="stars">★★★★★</div>' +
+
+          '<p>"' +
+            safe(review.text) +
+          '"</p>' +
+
+          '<strong>' +
+            safe(review.name) +
+          '</strong>' +
+
+        '</div>';
+
+    });
+
+  }
+
+
+  /* =========================================
+     REDES
+  ========================================= */
+
+  function renderSocials() {
+
+    var box =
+      document.getElementById("socials");
+
+    box.innerHTML = "";
+
+
+    CONFIG.socials.forEach(function (social) {
+
+      var target =
+        social.url !== "#" ? "_blank" : "_self";
+
+
+      box.innerHTML +=
+
+        '<a class="social-card reveal" ' +
+        'href="' + safe(social.url) + '" ' +
+        'target="' + target + '">' +
+
+          '<strong>' +
+            safe(social.name) +
+          '</strong>' +
+
+          '<span>→</span>' +
+
+        '</a>';
+
+    });
+
+  }
+
+
+  /* =========================================
+     LOADER
+  ========================================= */
+
+  var loader =
+    document.getElementById("loader");
+
+  var loaderNumber =
+    document.getElementById("loaderNumber");
+
+  var loaderBar =
+    document.getElementById("loaderBar");
+
+  var loaderText =
+    document.getElementById("loaderText");
+
+
+  function startLoader(url, message) {
+
+    loader.classList.remove("hidden");
+
+    loaderNumber.textContent = "1";
+    loaderBar.style.width = "0%";
+
+    loaderText.textContent =
+      message || "Preparando portafolio...";
+
+
+    var start =
+      Date.now();
+
+    var duration =
+      7000;
+
+
+    function update() {
+
+      var elapsed =
+        Date.now() - start;
+
+
+      var progress =
+        elapsed / duration;
+
+
+      if (progress > 1) {
+        progress = 1;
+      }
+
+
+      var number =
+        Math.floor(progress * 100);
+
+
+      if (number < 1) {
+        number = 1;
+      }
+
+
+      loaderNumber.textContent =
+        number;
+
+      loaderBar.style.width =
+        number + "%";
+
+
+      if (progress < 1) {
+
+        requestAnimationFrame(update);
+
+      } else {
+
+        loaderNumber.textContent =
+          "100";
+
+        loaderBar.style.width =
+          "100%";
+
+
+        setTimeout(function () {
+
+          if (url) {
+
+            window.location.href =
+              url;
+
+          } else {
+
+            loader.classList.add("hidden");
+
+          }
+
+        }, 100);
+
+      }
+
+    }
+
+
+    requestAnimationFrame(update);
+
+  }
+
+
+  /* =========================================
+     ADMIN
+  ========================================= */
+
+  var admin =
+    document.getElementById("admin");
+
+  var adminButton =
+    document.getElementById("adminButton");
+
+  var closeAdmin =
+    document.getElementById("closeAdmin");
+
+
+  adminButton.addEventListener(
+    "click",
+    function () {
+
+      openAdmin();
+
+    }
+  );
+
+
+  closeAdmin.addEventListener(
+    "click",
+    function () {
+
+      admin.classList.remove("show");
+
+    }
+  );
+
+
+  function openAdmin() {
+
+    admin.classList.add("show");
+
+    loadAdminFields();
+
+  }
+
+
+  /* =========================================
+     CARGAR CAMPOS ADMIN
+  ========================================= */
+
+  function loadAdminFields() {
+
+    document.getElementById("editName").value =
+      CONFIG.profile.name;
+
+    document.getElementById("editTitle").value =
+      CONFIG.profile.title;
+
+    document.getElementById("editDescription").value =
+      CONFIG.profile.description;
+
+    document.getElementById("editStatus").value =
+      CONFIG.profile.status;
+
+    document.getElementById("editImage").value =
+      CONFIG.profile.image;
+
+
+    document.getElementById("editAboutTitle").value =
+      CONFIG.about.title;
+
+    document.getElementById("editAboutText").value =
+      CONFIG.about.text;
+
+
+    document.getElementById("editStudioName").value =
+      CONFIG.studio.name;
+
+    document.getElementById("editStudioDescription").value =
+      CONFIG.studio.description;
+
+
+    renderProjectEditor();
+    renderSocialEditor();
+
+  }
+
+
+  /* =========================================
+     EDITOR DE PROYECTOS
+  ========================================= */
+
+  function renderProjectEditor() {
+
+    var box =
+      document.getElementById("projectEditor");
+
+    box.innerHTML = "";
+
+
+    CONFIG.projects.forEach(function (project, index) {
+
+      box.innerHTML +=
+
+        '<div class="editor-item">' +
+
+          '<strong>Proyecto ' +
+            (index + 1) +
+          '</strong>' +
+
+          '<label>Nombre</label>' +
+
+          '<input class="project-name" data-index="' +
+            index +
+            '" value="' +
+            safe(project.name) +
+          '">' +
+
+          '<label>Categoria</label>' +
+
+          '<input class="project-category" data-index="' +
+            index +
+            '" value="' +
+            safe(project.category) +
+          '">' +
+
+          '<label>Estado</label>' +
+
+          '<input class="project-status-input" data-index="' +
+            index +
+            '" value="' +
+            safe(project.status) +
+          '">' +
+
+          '<label>Descripcion</label>' +
+
+          '<textarea class="project-description" data-index="' +
+            index +
+          '">' +
+            safe(project.description) +
+          '</textarea>' +
+
+          '<label>URL del cliente</label>' +
+
+          '<input class="project-url" data-index="' +
+            index +
+            '" value="' +
+            safe(project.url) +
+            '" placeholder="https://...">' +
+
+        '</div>';
+
+    });
+
+  }
+
+
+  /* =========================================
+     EDITOR DE REDES
+  ========================================= */
+
+  function renderSocialEditor() {
+
+    var box =
+      document.getElementById("socialEditor");
+
+    box.innerHTML = "";
+
+
+    CONFIG.socials.forEach(function (social, index) {
+
+      box.innerHTML +=
+
+        '<div class="editor-item">' +
+
+          '<label>Nombre</label>' +
+
+          '<input class="social-name" data-index="' +
+            index +
+            '" value="' +
+            safe(social.name) +
+          '">' +
+
+          '<label>URL</label>' +
+
+          '<input class="social-url" data-index="' +
+            index +
+            '" value="' +
+            safe(social.url) +
+          '">' +
+
+        '</div>';
+
+    });
+
+  }
+
+
+  /* =========================================
+     GUARDAR
+  ========================================= */
+
+  document
+    .getElementById("save")
+    .addEventListener("click", function () {
+
+
+      CONFIG.profile.name =
+        document.getElementById("editName").value;
+
+      CONFIG.profile.title =
+        document.getElementById("editTitle").value;
+
+      CONFIG.profile.description =
+        document.getElementById("editDescription").value;
+
+      CONFIG.profile.status =
+        document.getElementById("editStatus").value;
+
+      CONFIG.profile.image =
+        document.getElementById("editImage").value;
+
+
+      CONFIG.about.title =
+        document.getElementById("editAboutTitle").value;
+
+      CONFIG.about.text =
+        document.getElementById("editAboutText").value;
+
+
+      CONFIG.studio.name =
+        document.getElementById("editStudioName").value;
+
+      CONFIG.studio.description =
+        document.getElementById("editStudioDescription").value;
+
+
+      /* PROYECTOS */
+
+      document
+        .querySelectorAll(".project-name")
+        .forEach(function (input) {
+
+          CONFIG.projects[
+            Number(input.dataset.index)
+          ].name = input.value;
+
+        });
+
+
+      document
+        .querySelectorAll(".project-category")
+        .forEach(function (input) {
+
+          CONFIG.projects[
+            Number(input.dataset.index)
+          ].category = input.value;
+
+        });
+
+
+      document
+        .querySelectorAll(".project-status-input")
+        .forEach(function (input) {
+
+          CONFIG.projects[
+            Number(input.dataset.index)
+          ].status = input.value;
+
+        });
+
+
+      document
+        .querySelectorAll(".project-description")
+        .forEach(function (input) {
+
+          CONFIG.projects[
+            Number(input.dataset.index)
+          ].description = input.value;
+
+        });
+
+
+      document
+        .querySelectorAll(".project-url")
+        .forEach(function (input) {
+
+          CONFIG.projects[
+            Number(input.dataset.index)
+          ].url = input.value;
+
+        });
+
+
+      /* REDES */
+
+      document
+        .querySelectorAll(".social-name")
+        .forEach(function (input) {
+
+          CONFIG.socials[
+            Number(input.dataset.index)
+          ].name = input.value;
+
+        });
+
+
+      document
+        .querySelectorAll(".social-url")
+        .forEach(function (input) {
+
+          CONFIG.socials[
+            Number(input.dataset.index)
+          ].url = input.value;
+
+        });
+
+
+      /* GUARDAR LOCALMENTE */
+
+      localStorage.setItem(
+        "portfolioConfig",
+        JSON.stringify(CONFIG)
+      );
+
+
+      renderAll();
+
+
+      admin.classList.remove("show");
+
+
+      alert(
+        "Cambios guardados correctamente."
+      );
+
+    });
+
+
+  /* =========================================
+     RESTABLECER
+  ========================================= */
+
+  document
+    .getElementById("reset")
+    .addEventListener("click", function () {
+
+      var confirmReset =
+        confirm(
+          "¿Quieres restablecer el portafolio?"
+        );
+
+
+      if (!confirmReset) {
+        return;
+      }
+
+
+      localStorage.removeItem(
+        "portfolioConfig"
+      );
+
+
+      location.reload();
+
+    });
+
+
+  /* =========================================
+     MENU MOVIL
+  ========================================= */
+
+  document
+    .getElementById("menuButton")
+    .addEventListener("click", function () {
+
+      document
+        .getElementById("nav")
+        .classList.toggle("open");
+
+    });
+
+
+  document
+    .querySelectorAll("#nav a")
+    .forEach(function (link) {
+
+      link.addEventListener("click", function () {
+
+        document
+          .getElementById("nav")
+          .classList.remove("open");
+
+      });
+
+    });
+
+
+  /* =========================================
+     ANIMACIONES
+  ========================================= */
+
+  function activateAnimations() {
+
+    var elements =
+      document.querySelectorAll(".reveal");
+
+
+    var observer =
+      new IntersectionObserver(
+        function (entries) {
+
+          entries.forEach(function (entry) {
+
+            if (entry.isIntersecting) {
+
+              entry.target.classList.add("visible");
+
+            }
+
+          });
+
+        },
+        {
+          threshold: 0.1
+        }
+      );
+
+
+    elements.forEach(function (element) {
+
+      observer.observe(element);
+
+    });
+
+  }
+
+
+  /* =========================================
+     RENDER TODO
+  ========================================= */
+
+  function renderAll() {
 
     renderProfile();
     renderServices();
@@ -488,1112 +836,29 @@ document.addEventListener(
     renderReviews();
     renderSocials();
 
-    setupAnimations();
-    setupMenu();
-    setupAdmin();
-
-    /*
-      La pagina principal tambien muestra
-      el contador del 1 al 100 durante 7 segundos.
-    */
-
-    startPortfolioLoader(
-      null,
-      "Cargando portafolio"
+    setTimeout(
+      activateAnimations,
+      50
     );
 
   }
-);
 
 
-/* =========================================================
-   RESEÑAS
-========================================================= */
+  /* =========================================
+     INICIAR
+  ========================================= */
 
-function renderReviews() {
-
-  const container =
-    document.getElementById("reviewsGrid");
-
-  container.innerHTML = "";
-
-  config.reviews.forEach(review => {
-
-    const card =
-      document.createElement("article");
-
-    card.className =
-      "review-card reveal";
-
-    card.innerHTML = `
-
-      <div class="review-stars">
-        ★★★★★
-      </div>
-
-      <p class="review-text">
-        "${escapeHTML(review.text)}"
-      </p>
-
-      <div class="review-name">
-        ${escapeHTML(review.name)}
-      </div>
-
-      <div class="review-role">
-        ${escapeHTML(review.role)}
-      </div>
-
-    `;
-
-    container.appendChild(card);
-
-  });
-}
-
-
-/* =========================================================
-   REDES
-========================================================= */
-
-function renderSocials() {
-
-  const container =
-    document.getElementById("socialGrid");
-
-  container.innerHTML = "";
-
-  config.socials.forEach(social => {
-
-    const card =
-      document.createElement("a");
-
-    card.className =
-      "social-card reveal";
-
-    card.href =
-      social.url || "#";
-
-    card.target =
-      social.url && social.url !== "#"
-        ? "_blank"
-        : "_self";
-
-    card.rel =
-      "noopener noreferrer";
-
-    card.innerHTML = `
-
-      <strong>
-        ${escapeHTML(social.name)}
-      </strong>
-
-      <span>
-        →
-      </span>
-
-    `;
-
-    container.appendChild(card);
-
-  });
-}
-
-
-/* =========================================================
-   ANIMACIONES SCROLL
-========================================================= */
-
-function setupAnimations() {
-
-  const observer =
-    new IntersectionObserver(
-      entries => {
-
-        entries.forEach(entry => {
-
-          if (entry.isIntersecting) {
-
-            entry.target.classList.add("show");
-
-            observer.unobserve(
-              entry.target
-            );
-
-          }
-
-        });
-
-      },
-      {
-        threshold: .12
-      }
-    );
-
-
-  document
-    .querySelectorAll(".reveal")
-    .forEach(element => {
-
-      observer.observe(element);
-
-    });
-}
-
-
-/* =========================================================
-   MENU MOVIL
-========================================================= */
-
-function setupMenu() {
-
-  if (!menuButton) {
-    return;
-  }
-
-
-  menuButton.addEventListener(
-    "click",
-    () => {
-
-      navMenu.classList.toggle(
-        "active"
-      );
-
-    }
-  );
-
-
-  navMenu
-    .querySelectorAll("a")
-    .forEach(link => {
-
-      link.addEventListener(
-        "click",
-        () => {
-
-          navMenu.classList.remove(
-            "active"
-          );
-
-        }
-      );
-
-    });
-}
-
-
-/* =========================================================
-   ADMIN
-========================================================= */
-
-const adminPanel =
-  document.getElementById("adminPanel");
-
-const adminTrigger =
-  document.getElementById("adminTrigger");
-
-const closeAdmin =
-  document.getElementById("closeAdmin");
-
-const adminOverlay =
-  document.getElementById("adminOverlay");
-
-
-function setupAdmin() {
-
-  adminTrigger.addEventListener(
-    "click",
-    openAdmin
-  );
-
-  closeAdmin.addEventListener(
-    "click",
-    closeAdminPanel
-  );
-
-  adminOverlay.addEventListener(
-    "click",
-    closeAdminPanel
-  );
+  renderAll();
 
 
   /*
-    Atajo para PC:
-    Ctrl + Shift + A
+    Loader inicial de 7 segundos.
   */
 
-  document.addEventListener(
-    "keydown",
-    event => {
-
-      if (
-        event.ctrlKey &&
-        event.shiftKey &&
-        event.key.toLowerCase() === "a"
-      ) {
-
-        openAdmin();
-
-      }
-
-
-      if (
-        event.key === "Escape" &&
-        adminPanel.classList.contains("active")
-      ) {
-
-        closeAdminPanel();
-
-      }
-
-    }
+  startLoader(
+    null,
+    "Cargando portafolio..."
   );
 
 
-  document
-    .getElementById("saveConfig")
-    .addEventListener(
-      "click",
-      saveAdmin
-    );
-
-
-  document
-    .getElementById("resetConfig")
-    .addEventListener(
-      "click",
-      resetConfig
-    );
-
-
-  document
-    .getElementById("addService")
-    .addEventListener(
-      "click",
-      addService
-    );
-
-
-  document
-    .getElementById("addProject")
-    .addEventListener(
-      "click",
-      addProject
-    );
-
-
-  document
-    .getElementById("addReview")
-    .addEventListener(
-      "click",
-      addReview
-    );
-
-
-  document
-    .getElementById("addSocial")
-    .addEventListener(
-      "click",
-      addSocial
-    );
-
-}
-
-
-function openAdmin() {
-
-  adminPanel.classList.add(
-    "active"
-  );
-
-  renderAdmin();
-
-  document.body.style.overflow =
-    "hidden";
-}
-
-
-function closeAdminPanel() {
-
-  adminPanel.classList.remove(
-    "active"
-  );
-
-  document.body.style.overflow =
-    "";
-}
-
-
-/* =========================================================
-   RENDER ADMIN
-========================================================= */
-
-function renderAdmin() {
-
-  document.getElementById("adminName").value =
-    config.profile.name || "";
-
-  document.getElementById("adminTitle").value =
-    config.profile.title || "";
-
-  document.getElementById("adminDescription").value =
-    config.profile.description || "";
-
-  document.getElementById("adminStatus").value =
-    config.profile.status || "";
-
-  document.getElementById("adminImage").value =
-    config.profile.image || "";
-
-
-  document.getElementById("adminAboutTitle").value =
-    config.about.title || "";
-
-  document.getElementById("adminAboutText").value =
-    config.about.text || "";
-
-
-  document.getElementById("adminStudioName").value =
-    config.studio.name || "";
-
-  document.getElementById("adminStudioDescription").value =
-    config.studio.description || "";
-
-
-  renderAdminServices();
-  renderAdminProjects();
-  renderAdminReviews();
-  renderAdminSocials();
-}
-
-
-/* =========================================================
-   ADMIN SERVICES
-========================================================= */
-
-function renderAdminServices() {
-
-  const container =
-    document.getElementById("adminServices");
-
-  container.innerHTML = "";
-
-
-  config.services.forEach(
-    (service, index) => {
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "admin-item";
-
-      item.innerHTML = `
-
-        <label>Nombre</label>
-
-        <input
-          data-service-title="${index}"
-          value="${escapeHTML(service.title)}"
-        >
-
-        <label>Descripcion</label>
-
-        <textarea
-          data-service-description="${index}"
-        >${escapeHTML(service.description)}</textarea>
-
-        <button
-          class="admin-delete"
-          data-delete-service="${index}"
-        >
-          Eliminar
-        </button>
-
-      `;
-
-      container.appendChild(item);
-
-    }
-  );
-
-
-  container
-    .querySelectorAll("[data-delete-service]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const index =
-            Number(
-              button.dataset.deleteService
-            );
-
-          config.services.splice(
-            index,
-            1
-          );
-
-          renderAdminServices();
-
-        }
-      );
-
-    });
-}
-
-
-/* =========================================================
-   ADMIN PROJECTS
-========================================================= */
-
-function renderAdminProjects() {
-
-  const container =
-    document.getElementById("adminProjects");
-
-  container.innerHTML = "";
-
-
-  config.projects.forEach(
-    (project, index) => {
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "admin-item";
-
-      item.innerHTML = `
-
-        <label>Nombre</label>
-
-        <input
-          data-project-name="${index}"
-          value="${escapeHTML(project.name)}"
-        >
-
-        <label>Categoria</label>
-
-        <input
-          data-project-category="${index}"
-          value="${escapeHTML(project.category)}"
-        >
-
-        <label>Estado</label>
-
-        <input
-          data-project-status="${index}"
-          value="${escapeHTML(project.status)}"
-        >
-
-        <label>Descripcion</label>
-
-        <textarea
-          data-project-description="${index}"
-        >${escapeHTML(project.description)}</textarea>
-
-        <label>URL del portafolio del cliente</label>
-
-        <input
-          data-project-url="${index}"
-          value="${escapeHTML(project.clientUrl)}"
-          placeholder="https://ejemplo.com"
-        >
-
-        <button
-          class="admin-delete"
-          data-delete-project="${index}"
-        >
-          Eliminar proyecto
-        </button>
-
-      `;
-
-      container.appendChild(item);
-
-    }
-  );
-
-
-  container
-    .querySelectorAll("[data-delete-project]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const index =
-            Number(
-              button.dataset.deleteProject
-            );
-
-          config.projects.splice(
-            index,
-            1
-          );
-
-          renderAdminProjects();
-
-        }
-      );
-
-    });
-}
-
-
-/* =========================================================
-   ADMIN REVIEWS
-========================================================= */
-
-function renderAdminReviews() {
-
-  const container =
-    document.getElementById("adminReviews");
-
-  container.innerHTML = "";
-
-
-  config.reviews.forEach(
-    (review, index) => {
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "admin-item";
-
-      item.innerHTML = `
-
-        <label>Nombre</label>
-
-        <input
-          data-review-name="${index}"
-          value="${escapeHTML(review.name)}"
-        >
-
-        <label>Rol</label>
-
-        <input
-          data-review-role="${index}"
-          value="${escapeHTML(review.role)}"
-        >
-
-        <label>Resena</label>
-
-        <textarea
-          data-review-text="${index}"
-        >${escapeHTML(review.text)}</textarea>
-
-        <button
-          class="admin-delete"
-          data-delete-review="${index}"
-        >
-          Eliminar resena
-        </button>
-
-      `;
-
-      container.appendChild(item);
-
-    }
-  );
-
-
-  container
-    .querySelectorAll("[data-delete-review]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const index =
-            Number(
-              button.dataset.deleteReview
-            );
-
-          config.reviews.splice(
-            index,
-            1
-          );
-
-          renderAdminReviews();
-
-        }
-      );
-
-    });
-}
-
-
-/* =========================================================
-   ADMIN SOCIALS
-========================================================= */
-
-function renderAdminSocials() {
-
-  const container =
-    document.getElementById("adminSocials");
-
-  container.innerHTML = "";
-
-
-  config.socials.forEach(
-    (social, index) => {
-
-      const item =
-        document.createElement("div");
-
-      item.className =
-        "admin-item";
-
-      item.innerHTML = `
-
-        <label>Red social</label>
-
-        <input
-          data-social-name="${index}"
-          value="${escapeHTML(social.name)}"
-        >
-
-        <label>URL</label>
-
-        <input
-          data-social-url="${index}"
-          value="${escapeHTML(social.url)}"
-          placeholder="https://..."
-        >
-
-        <button
-          class="admin-delete"
-          data-delete-social="${index}"
-        >
-          Eliminar red
-        </button>
-
-      `;
-
-      container.appendChild(item);
-
-    }
-  );
-
-
-  container
-    .querySelectorAll("[data-delete-social]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const index =
-            Number(
-              button.dataset.deleteSocial
-            );
-
-          config.socials.splice(
-            index,
-            1
-          );
-
-          renderAdminSocials();
-
-        }
-      );
-
-    });
-}
-
-
-/* =========================================================
-   AGREGAR SERVICIO
-========================================================= */
-
-function addService() {
-
-  config.services.push({
-
-    title: "Nuevo servicio",
-
-    description:
-      "Descripcion del nuevo servicio."
-
-  });
-
-
-  renderAdminServices();
-}
-
-
-/* =========================================================
-   AGREGAR PROYECTO
-========================================================= */
-
-function addProject() {
-
-  config.projects.push({
-
-    name:
-      `Proyecto ${String(config.projects.length + 1).padStart(2, "0")}`,
-
-    category:
-      "Portafolio",
-
-    status:
-      "Proximamente",
-
-    description:
-      "Portafolio de cliente.",
-
-    clientUrl:
-      "#"
-
-  });
-
-
-  renderAdminProjects();
-}
-
-
-/* =========================================================
-   AGREGAR RESEÑA
-========================================================= */
-
-function addReview() {
-
-  config.reviews.push({
-
-    name:
-      "Nuevo cliente",
-
-    role:
-      "Cliente",
-
-    text:
-      "Nueva resena."
-
-  });
-
-
-  renderAdminReviews();
-}
-
-
-/* =========================================================
-   AGREGAR RED
-========================================================= */
-
-function addSocial() {
-
-  config.socials.push({
-
-    name:
-      "Nueva red",
-
-    url:
-      "#"
-
-  });
-
-
-  renderAdminSocials();
-}
-
-
-/* =========================================================
-   GUARDAR ADMIN
-========================================================= */
-
-function saveAdmin() {
-
-  /*
-    GENERAL
-  */
-
-  config.profile.name =
-    document.getElementById("adminName").value;
-
-  config.profile.title =
-    document.getElementById("adminTitle").value;
-
-  config.profile.description =
-    document.getElementById("adminDescription").value;
-
-  config.profile.status =
-    document.getElementById("adminStatus").value;
-
-  config.profile.image =
-    document.getElementById("adminImage").value;
-
-
-  /*
-    SOBRE MI
-  */
-
-  config.about.title =
-    document.getElementById("adminAboutTitle").value;
-
-  config.about.text =
-    document.getElementById("adminAboutText").value;
-
-
-  /*
-    STUDIO
-  */
-
-  config.studio.name =
-    document.getElementById("adminStudioName").value;
-
-  config.studio.description =
-    document.getElementById("adminStudioDescription").value;
-
-
-  /*
-    SERVICIOS
-  */
-
-  config.services.forEach(
-    (service, index) => {
-
-      const title =
-        document.querySelector(
-          `[data-service-title="${index}"]`
-        );
-
-      const description =
-        document.querySelector(
-          `[data-service-description="${index}"]`
-        );
-
-
-      if (title) {
-        service.title =
-          title.value;
-      }
-
-      if (description) {
-        service.description =
-          description.value;
-      }
-
-    }
-  );
-
-
-  /*
-    PROYECTOS
-  */
-
-  config.projects.forEach(
-    (project, index) => {
-
-      const name =
-        document.querySelector(
-          `[data-project-name="${index}"]`
-        );
-
-      const category =
-        document.querySelector(
-          `[data-project-category="${index}"]`
-        );
-
-      const status =
-        document.querySelector(
-          `[data-project-status="${index}"]`
-        );
-
-      const description =
-        document.querySelector(
-          `[data-project-description="${index}"]`
-        );
-
-      const url =
-        document.querySelector(
-          `[data-project-url="${index}"]`
-        );
-
-
-      if (name) {
-        project.name =
-          name.value;
-      }
-
-      if (category) {
-        project.category =
-          category.value;
-      }
-
-      if (status) {
-        project.status =
-          status.value;
-      }
-
-      if (description) {
-        project.description =
-          description.value;
-      }
-
-      if (url) {
-        project.clientUrl =
-          url.value.trim();
-      }
-
-    }
-  );
-
-
-  /*
-    RESEÑAS
-  */
-
-  config.reviews.forEach(
-    (review, index) => {
-
-      const name =
-        document.querySelector(
-          `[data-review-name="${index}"]`
-        );
-
-      const role =
-        document.querySelector(
-          `[data-review-role="${index}"]`
-        );
-
-      const text =
-        document.querySelector(
-          `[data-review-text="${index}"]`
-        );
-
-
-      if (name) {
-        review.name =
-          name.value;
-      }
-
-      if (role) {
-        review.role =
-          role.value;
-      }
-
-      if (text) {
-        review.text =
-          text.value;
-      }
-
-    }
-  );
-
-
-  /*
-    REDES
-  */
-
-  config.socials.forEach(
-    (social, index) => {
-
-      const name =
-        document.querySelector(
-          `[data-social-name="${index}"]`
-        );
-
-      const url =
-        document.querySelector(
-          `[data-social-url="${index}"]`
-        );
-
-
-      if (name) {
-        social.name =
-          name.value;
-      }
-
-      if (url) {
-        social.url =
-          url.value.trim();
-      }
-
-    }
-  );
-
-
-  /*
-    GUARDAR
-  */
-
-  localStorage.setItem(
-    "portfolioConfig",
-    JSON.stringify(config)
-  );
-
-
-  /*
-    ACTUALIZAR PAGINA
-  */
-
-  renderProfile();
-  renderServices();
-  renderProjects();
-  renderReviews();
-  renderSocials();
-
-  setupAnimations();
-
-
-  /*
-    MENSAJE
-  */
-
-  alert(
-    "Cambios guardados correctamente."
-  );
-
-  closeAdminPanel();
-}
-
-
-/* =========================================================
-   RESTABLECER
-========================================================= */
-
-function resetConfig() {
-
-  const confirmation =
-    confirm(
-      "Esto borrara los cambios guardados y volvera a la configuracion original. ¿Continuar?"
-    );
-
-
-  if (!confirmation) {
-    return;
-  }
-
-
-  localStorage.removeItem(
-    "portfolioConfig"
-  );
-
-
-  config =
-    clone(DEFAULT_CONFIG);
-
-
-  renderAdmin();
-
-  renderProfile();
-  renderServices();
-  renderProjects();
-  renderReviews();
-  renderSocials();
-
-  setupAnimations();
-
-
-  alert(
-    "Configuracion restablecida."
-  );
-           }
+})();
