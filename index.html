@@ -4,12 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Portafolios | Creador de Portafolios</title>
-  <meta name="description" content="Creador de portafolios profesionales con diseño moderno y animaciones.">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <title>Mi Portafolio</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
@@ -17,494 +12,315 @@
 <body>
 
   <!-- LOADER -->
-  <div id="portfolioLoader" class="portfolio-loader">
-    <div class="loader-background"></div>
-
-    <div class="loader-content">
-
+  <div id="loader">
+    <div class="loader-box">
       <div class="loader-logo">PORTFOLIO</div>
 
-      <div class="loader-title">
-        Cargando portafolio
+      <h2>Cargando portafolio</h2>
+
+      <div id="loaderNumber">1</div>
+
+      <div class="loader-bar">
+        <div id="loaderBar"></div>
       </div>
 
-      <div class="loader-number">
-        <span id="loaderNumber">1</span>
-        <small>%</small>
-      </div>
-
-      <div class="loader-line">
-        <div id="loaderProgress"></div>
-      </div>
-
-      <div class="loader-info">
-        <span id="loaderStatus">Preparando portafolio</span>
-        <span>7.0s</span>
-      </div>
-
-      <div class="loader-dots">
-        <span></span>
-        <span></span>
-        <span></span>
-      </div>
-
+      <p id="loaderText">Preparando portafolio...</p>
     </div>
   </div>
 
 
   <!-- NAVBAR -->
-  <header class="navbar">
-    <div class="nav-container">
+  <header>
+    <div class="nav">
 
-      <a href="#inicio" class="logo">
+      <div class="logo">
         PORTFOLIO<span>.</span>
-      </a>
+      </div>
 
-      <nav id="navMenu">
+      <button id="menuButton">☰</button>
+
+      <nav id="nav">
         <a href="#inicio">Inicio</a>
-        <a href="#sobre-mi">Sobre mi</a>
-        <a href="#que-hago">Que hago</a>
+        <a href="#sobre">Sobre mi</a>
+        <a href="#hago">Que hago</a>
         <a href="#proyectos">Proyectos</a>
         <a href="#resenas">Resenas</a>
         <a href="#studio">Studio</a>
-        <a href="#redes">Redes sociales</a>
+        <a href="#redes">Redes</a>
       </nav>
-
-      <button class="menu-button" id="menuButton">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
 
     </div>
   </header>
 
 
-  <main>
+  <!-- INICIO -->
+  <section id="inicio" class="hero">
 
-    <!-- INICIO -->
-    <section id="inicio" class="hero section">
+    <div class="hero-bg"></div>
 
-      <div class="hero-bg">
-        <div class="red-orb orb-one"></div>
-        <div class="red-orb orb-two"></div>
-        <div class="grid-bg"></div>
-      </div>
+    <div class="hero-content">
 
-      <div class="container hero-container">
+      <div class="hero-text reveal">
 
-        <div class="hero-text reveal">
-
-          <div class="status-badge">
-            <span></span>
-            <b id="heroStatus">Disponible para proyectos</b>
-          </div>
-
-          <p class="hero-small">
-            CREADOR DE PORTAFOLIOS
-          </p>
-
-          <h1 id="heroName">
-            Tu nombre
-          </h1>
-
-          <h2 id="heroTitle">
-            Creador de Portafolios
-          </h2>
-
-          <p id="heroDescription" class="hero-description">
-            Creo portafolios modernos, profesionales y animados para mostrar proyectos, marcas y trabajos.
-          </p>
-
-          <div class="hero-buttons">
-            <a href="#proyectos" class="btn btn-primary">
-              Ver proyectos
-            </a>
-
-            <a href="#redes" class="btn btn-secondary">
-              Contactarme
-            </a>
-          </div>
-
+        <div class="status">
+          <i></i>
+          <span id="status">Disponible para proyectos</span>
         </div>
 
+        <small>CREADOR DE PORTAFOLIOS</small>
 
-        <div class="hero-image-wrapper reveal reveal-delay">
+        <h1 id="name">
+          Tu nombre
+        </h1>
 
-          <div class="image-ring"></div>
+        <h2 id="title">
+          Creador de Portafolios
+        </h2>
 
-          <div class="hero-image-card">
-            <img
-              id="heroImage"
-              src=""
-              alt="Imagen de perfil"
-            >
+        <p id="description">
+          Creo portafolios modernos y profesionales para mostrar proyectos.
+        </p>
 
-            <div class="image-glow"></div>
-          </div>
+        <div class="buttons">
 
-          <div class="floating-card floating-card-one">
-            <strong>10+</strong>
-            <span>Proyectos</span>
-          </div>
+          <a href="#proyectos" class="button red">
+            Ver proyectos
+          </a>
 
-          <div class="floating-card floating-card-two">
-            <strong>AAA</strong>
-            <span>Diseño</span>
-          </div>
+          <a href="#redes" class="button">
+            Contactarme
+          </a>
 
         </div>
 
       </div>
 
-    </section>
 
+      <div class="profile reveal">
 
-    <!-- SOBRE MI -->
-    <section id="sobre-mi" class="section">
+        <div class="profile-glow"></div>
 
-      <div class="container">
+        <img id="profileImage" src="" alt="Perfil">
 
-        <div class="section-heading reveal">
-          <span>01</span>
-          <h2>Sobre mi</h2>
-          <p>Conoce un poco sobre mi trabajo.</p>
-        </div>
-
-        <div class="about-grid">
-
-          <div class="about-card main-card reveal">
-            <div class="card-number">01</div>
-
-            <h3 id="aboutTitle">
-              Sobre mi
-            </h3>
-
-            <p id="aboutText">
-              Creo experiencias digitales enfocadas en presentar proyectos de una forma moderna, limpia y profesional.
-            </p>
-          </div>
-
-
-          <div class="about-card reveal reveal-delay">
-            <div class="about-icon">01</div>
-            <h3>Diseño moderno</h3>
-            <p>
-              Interfaces oscuras, elegantes y con animaciones para destacar cada proyecto.
-            </p>
-          </div>
-
-
-          <div class="about-card reveal reveal-delay-2">
-            <div class="about-icon">02</div>
-            <h3>Experiencia</h3>
-            <p>
-              Cada portafolio se adapta al proyecto y a la identidad de cada cliente.
-            </p>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- QUE HAGO -->
-    <section id="que-hago" class="section dark-section">
-
-      <div class="container">
-
-        <div class="section-heading reveal">
-          <span>02</span>
-          <h2>Que hago</h2>
-          <p>Servicios y trabajos que puedo realizar.</p>
-        </div>
-
-        <div id="servicesGrid" class="services-grid"></div>
-
-      </div>
-
-    </section>
-
-
-    <!-- PROYECTOS -->
-    <section id="proyectos" class="section">
-
-      <div class="container">
-
-        <div class="section-heading reveal">
-          <span>03</span>
-          <h2>Proyectos</h2>
-          <p>Algunos de los proyectos realizados.</p>
-        </div>
-
-        <div id="projectsGrid" class="projects-grid"></div>
-
-      </div>
-
-    </section>
-
-
-    <!-- RESENAS -->
-    <section id="resenas" class="section dark-section">
-
-      <div class="container">
-
-        <div class="section-heading reveal">
-          <span>04</span>
-          <h2>Resenas</h2>
-          <p>Opiniones de clientes.</p>
-        </div>
-
-        <div id="reviewsGrid" class="reviews-grid"></div>
-
-      </div>
-
-    </section>
-
-
-    <!-- STUDIO -->
-    <section id="studio" class="section">
-
-      <div class="container">
-
-        <div class="studio-box reveal">
-
-          <div class="studio-glow"></div>
-
-          <div class="studio-content">
-
-            <span class="studio-label">
-              MI STUDIO
-            </span>
-
-            <h2 id="studioName">
-              Studio
-            </h2>
-
-            <p id="studioDescription">
-              Un espacio dedicado a crear experiencias digitales.
-            </p>
-
-            <a href="#redes" class="btn btn-primary">
-              Conocer mas
-            </a>
-
-          </div>
-
-          <div class="studio-decoration">
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- REDES -->
-    <section id="redes" class="section dark-section">
-
-      <div class="container">
-
-        <div class="section-heading reveal">
-          <span>05</span>
-          <h2>Redes sociales</h2>
-          <p>Encuentrame en mis redes.</p>
-        </div>
-
-        <div id="socialGrid" class="social-grid"></div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- FOOTER -->
-  <footer class="footer">
-
-    <div class="container footer-container">
-
-      <div>
-        <strong>PORTFOLIO.</strong>
-        <p>Creador de portafolios.</p>
-      </div>
-
-      <div>
-        <p>Todos los derechos reservados.</p>
       </div>
 
     </div>
 
+  </section>
+
+
+  <!-- SOBRE -->
+  <section id="sobre" class="section">
+
+    <div class="container">
+
+      <div class="heading">
+        <span>01</span>
+        <h2>Sobre mi</h2>
+        <p>Conoce un poco sobre mi trabajo.</p>
+      </div>
+
+      <div class="about-box reveal">
+
+        <h3 id="aboutTitle">
+          Sobre mi
+        </h3>
+
+        <p id="aboutText">
+          Creo portafolios modernos para diferentes proyectos.
+        </p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- QUE HAGO -->
+  <section id="hago" class="section dark">
+
+    <div class="container">
+
+      <div class="heading">
+        <span>02</span>
+        <h2>Que hago</h2>
+        <p>Algunos de mis servicios.</p>
+      </div>
+
+      <div id="services" class="cards"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- PROYECTOS -->
+  <section id="proyectos" class="section">
+
+    <div class="container">
+
+      <div class="heading">
+        <span>03</span>
+        <h2>Proyectos</h2>
+        <p>Portafolios realizados.</p>
+      </div>
+
+      <div id="projects" class="projects"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- RESEÑAS -->
+  <section id="resenas" class="section dark">
+
+    <div class="container">
+
+      <div class="heading">
+        <span>04</span>
+        <h2>Resenas</h2>
+        <p>Opiniones de clientes.</p>
+      </div>
+
+      <div id="reviews" class="reviews"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- STUDIO -->
+  <section id="studio" class="section">
+
+    <div class="container">
+
+      <div class="studio reveal">
+
+        <span>MI STUDIO</span>
+
+        <h2 id="studioName">
+          Mi Studio
+        </h2>
+
+        <p id="studioDescription">
+          Creacion de portafolios y experiencias digitales.
+        </p>
+
+        <a href="#redes" class="button red">
+          Contactar
+        </a>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- REDES -->
+  <section id="redes" class="section dark">
+
+    <div class="container">
+
+      <div class="heading">
+        <span>05</span>
+        <h2>Redes sociales</h2>
+        <p>Mis redes y contacto.</p>
+      </div>
+
+      <div id="socials" class="socials"></div>
+
+    </div>
+
+  </section>
+
+
+  <!-- FOOTER -->
+  <footer>
+    <strong>PORTFOLIO.</strong>
+    <p>Todos los derechos reservados.</p>
   </footer>
 
 
-  <!-- BOTON OCULTO ADMIN -->
-  <button id="adminTrigger" class="admin-trigger" aria-label="Admin"></button>
+  <!-- ADMIN OCULTO -->
+  <button id="adminButton" class="admin-button">A</button>
 
 
-  <!-- ADMIN PANEL -->
-  <div id="adminPanel" class="admin-panel">
+  <!-- ADMIN -->
+  <div id="admin" class="admin">
 
-    <div class="admin-overlay" id="adminOverlay"></div>
+    <div class="admin-box">
 
-    <div class="admin-window">
-
-      <div class="admin-header">
-
+      <div class="admin-top">
         <div>
-          <span>ADMIN PANEL</span>
+          <small>ADMIN</small>
           <h2>Editar portafolio</h2>
         </div>
 
-        <button id="closeAdmin" class="close-admin">
-          ×
-        </button>
+        <button id="closeAdmin">×</button>
+      </div>
+
+
+      <div class="admin-content">
+
+        <h3>Informacion principal</h3>
+
+        <label>Nombre</label>
+        <input id="editName">
+
+        <label>Titulo</label>
+        <input id="editTitle">
+
+        <label>Descripcion</label>
+        <textarea id="editDescription"></textarea>
+
+        <label>Estado</label>
+        <input id="editStatus">
+
+        <label>Imagen</label>
+        <input id="editImage">
+
+
+        <h3>Sobre mi</h3>
+
+        <label>Titulo</label>
+        <input id="editAboutTitle">
+
+        <label>Texto</label>
+        <textarea id="editAboutText"></textarea>
+
+
+        <h3>Studio</h3>
+
+        <label>Nombre</label>
+        <input id="editStudioName">
+
+        <label>Descripcion</label>
+        <textarea id="editStudioDescription"></textarea>
+
+
+        <h3>Proyectos</h3>
+
+        <div id="projectEditor"></div>
+
+
+        <h3>Redes</h3>
+
+        <div id="socialEditor"></div>
 
       </div>
 
 
-      <div class="admin-body">
+      <div class="admin-bottom">
 
-        <!-- GENERAL -->
-        <div class="admin-section">
-
-          <h3>Informacion principal</h3>
-
-          <label>Nombre</label>
-          <input id="adminName" type="text">
-
-          <label>Titulo</label>
-          <input id="adminTitle" type="text">
-
-          <label>Descripcion</label>
-          <textarea id="adminDescription"></textarea>
-
-          <label>Estado</label>
-          <input id="adminStatus" type="text">
-
-          <label>Imagen</label>
-          <input id="adminImage" type="text">
-
-        </div>
-
-
-        <!-- SOBRE MI -->
-        <div class="admin-section">
-
-          <h3>Sobre mi</h3>
-
-          <label>Titulo</label>
-          <input id="adminAboutTitle" type="text">
-
-          <label>Texto</label>
-          <textarea id="adminAboutText"></textarea>
-
-        </div>
-
-
-        <!-- SERVICIOS -->
-        <div class="admin-section">
-
-          <div class="admin-section-title">
-
-            <h3>Que hago</h3>
-
-            <button id="addService" class="admin-small-button">
-              + Agregar
-            </button>
-
-          </div>
-
-          <div id="adminServices"></div>
-
-        </div>
-
-
-        <!-- PROYECTOS -->
-        <div class="admin-section">
-
-          <div class="admin-section-title">
-
-            <h3>Proyectos</h3>
-
-            <button id="addProject" class="admin-small-button">
-              + Agregar
-            </button>
-
-          </div>
-
-          <div id="adminProjects"></div>
-
-        </div>
-
-
-        <!-- RESEÑAS -->
-        <div class="admin-section">
-
-          <div class="admin-section-title">
-
-            <h3>Resenas</h3>
-
-            <button id="addReview" class="admin-small-button">
-              + Agregar
-            </button>
-
-          </div>
-
-          <div id="adminReviews"></div>
-
-        </div>
-
-
-        <!-- STUDIO -->
-        <div class="admin-section">
-
-          <h3>Studio</h3>
-
-          <label>Nombre</label>
-          <input id="adminStudioName" type="text">
-
-          <label>Descripcion</label>
-          <textarea id="adminStudioDescription"></textarea>
-
-        </div>
-
-
-        <!-- REDES -->
-        <div class="admin-section">
-
-          <div class="admin-section-title">
-
-            <h3>Redes sociales</h3>
-
-            <button id="addSocial" class="admin-small-button">
-              + Agregar
-            </button>
-
-          </div>
-
-          <div id="adminSocials"></div>
-
-        </div>
-
-      </div>
-
-
-      <div class="admin-footer">
-
-        <button id="resetConfig" class="admin-reset">
+        <button id="reset" class="reset">
           Restablecer
         </button>
 
-        <button id="saveConfig" class="admin-save">
-          Guardar cambios
+        <button id="save" class="save">
+          Guardar
         </button>
 
       </div>
@@ -514,10 +330,8 @@
   </div>
 
 
-  <!-- CONFIG PRIMERO -->
+  <!-- CONFIG SIEMPRE ANTES DE SCRIPT -->
   <script src="config.js"></script>
-
-  <!-- SCRIPT DESPUES -->
   <script src="script.js"></script>
 
 </body>
